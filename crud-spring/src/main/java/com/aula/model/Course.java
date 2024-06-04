@@ -4,6 +4,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -38,7 +39,7 @@ public class Course {
 
     @NotNull
     @Length(max = 10)
-    //@Pattern(regexp = "Back-end | Front-end")
+    @Pattern(regexp = "Back-end | Front-end")
     @Column(length = 10, nullable = false)
     private String category;
 
