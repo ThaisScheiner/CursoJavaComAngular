@@ -2,7 +2,6 @@ package com.aula.enums.coverters;
 
 import java.util.stream.Stream;
 
-import com.aula.enums.Category;
 import com.aula.enums.Status;
 
 import jakarta.persistence.AttributeConverter;
@@ -10,17 +9,18 @@ import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class StatusConverter implements AttributeConverter<Status, String> {
-     @Override
-    public String convertToDatabaseColumn(Status status) {
-        if(status == null){
+
+    @Override
+    public String convertToDatabaseColumn(Status category) {
+        if (category == null) {
             return null;
         }
-        return status.getValue();
+        return category.getValue();
     }
 
     @Override
     public Status convertToEntityAttribute(String value) {
-        if(value == null){
+        if (value == null) {
             return null;
         }
         return Stream.of(Status.values())
@@ -28,4 +28,5 @@ public class StatusConverter implements AttributeConverter<Status, String> {
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.aula.controller;
+package com.loiane.course;
 
 import java.util.List;
 
@@ -15,21 +15,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aula.dto.CourseDTO;
-import com.aula.dto.CoursePageDTO;
-import com.aula.service.CourseService;
-
+import com.loiane.course.dto.CourseDTO;
+import com.loiane.course.dto.CoursePageDTO;
+import com.loiane.course.dto.CourseRequestDTO;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 
-
+/**
+ * Represents the REST API for the Course resource.
+ */
 @Validated
 @RestController
-@RequestMapping("/api/courses")
+@RequestMapping("api/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -39,36 +39,36 @@ public class CourseController {
     }
 
     @GetMapping
-    public CoursePageDTO list(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
-            @RequestParam(defaultValue = "10") @Positive @Max(100) int pageSize) {
-        return courseService.list(page, pageSize);
+    public CoursePageDTO findAll(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return courseService.findAll(page, pageSize);
     }
 
-    // @GetMapping
-    // public List<CourseDTO> list() {
-    // return courseService.list();
-    // }
+    @GetMapping("/searchByName")
+    public List<CourseDTO> findByName(@RequestParam @NotNull @NotBlank String name) {
+        return courseService.findByName(name);
+    }
 
     @GetMapping("/{id}")
-    public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findById(@PathVariable @Positive @NotNull Long id) {
         return courseService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public CourseDTO create(@RequestBody @Valid @NotNull CourseDTO course) {
+    public CourseDTO create(@RequestBody @Valid CourseRequestDTO course) {
         return courseService.create(course);
     }
 
-    @PutMapping("/{id}")
-    public CourseDTO update(@PathVariable @NotNull @Positive Long id,
-            @RequestBody @Valid @NotNull CourseDTO course) {
+    @PutMapping(value = "/{id}")
+    public CourseDTO update(@PathVariable @Positive @NotNull Long id,
+            @RequestBody @Valid CourseRequestDTO course) {
         return courseService.update(id, course);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable @NotNull @Positive Long id) {
+    public void delete(@PathVariable @Positive @NotNull Long id) {
         courseService.delete(id);
     }
 }

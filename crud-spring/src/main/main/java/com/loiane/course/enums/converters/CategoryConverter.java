@@ -1,8 +1,8 @@
-package com.aula.enums.coverters;
+package com.loiane.course.enums.converters;
 
 import java.util.stream.Stream;
 
-import com.aula.enums.Category;
+import com.loiane.course.enums.Category;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
@@ -11,11 +11,11 @@ import jakarta.persistence.Converter;
 public class CategoryConverter implements AttributeConverter<Category, String> {
 
     @Override
-    public String convertToDatabaseColumn(Category category) {
-        if (category == null) {
+    public String convertToDatabaseColumn(Category status) {
+        if (status == null) {
             return null;
         }
-        return category.getValue();
+        return status.getValue();
     }
 
     @Override
